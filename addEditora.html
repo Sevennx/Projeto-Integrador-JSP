@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Nova Editora</title>
+    <style>
+        /* Estilos semelhantes aos das outras páginas */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Nova Editora</h1>
+        
+        <form class="form-group" action="processar-editora.php" method="POST">
+            <label for="nome">Nome da Editora:</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" required>
+            
+            <button type="submit">Adicionar Editora</button>
+        </form>
+    </div>
+</body>
+</html>
