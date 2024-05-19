@@ -27,6 +27,8 @@
         }
         h1 {
             margin-bottom: 20px;
+            color: #333;
+            font-size: 2em;
         }
         .search-bar {
             margin-bottom: 20px;
@@ -36,6 +38,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 1em;
         }
         .book-list {
             list-style-type: none;
@@ -45,13 +48,23 @@
         .book-item {
             padding: 10px;
             border-bottom: 1px solid #eee;
+            font-size: 1.2em;
+            color: #666;
         }
         .book-item:last-child {
             border-bottom: none;
         }
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #666;
+        }
     </style>
 </head>
 <body>
+    
     <div class="container">
         <h1>Catálogo de Livros</h1>
         
@@ -64,26 +77,12 @@
             <li class="book-item">Livro 1: Título do Livro</li>
             <li class="book-item">Livro 2: Outro Título</li>
             <li class="book-item">Livro 3: Mais um Título</li>
-            <!-- Adicione mais livros aqui -->
         </ul>
     </div>
-
-    <script>
-        function filterBooks() {
-            const searchInput = document.getElementById('search');
-            const filter = searchInput.value.toLowerCase();
-            const bookList = document.getElementById('book-list');
-            const books = bookList.getElementsByClassName('book-item');
-
-            for (let i = 0; i < books.length; i++) {
-                const bookTitle = books[i].textContent || books[i].innerText;
-                if (bookTitle.toLowerCase().includes(filter)) {
-                    books[i].style.display = "";
-                } else {
-                    books[i].style.display = "none";
-                }
-            }
-        }
-    </script>
+    <br>
+    <div>
+       <button><a href="login.jsp">Ir para página de login</a></button>
+    </div>
+    
 </body>
 </html>
