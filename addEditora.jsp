@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Nova Editora</title>
     <style>
-        <style>
         * {
             margin: 0;
             padding: 0;
@@ -33,17 +32,6 @@
             max-width: 400px;
             text-align: center;
         }
-
-        .container-msg{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        
         h1 {
             margin-bottom: 20px;
             color: #333;
@@ -75,26 +63,46 @@
         button:hover {
             background-color: #0056b3;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .modal-content button {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
 <%
-    // Verifica se os parâmetros foram enviados
     String nome = request.getParameter("nome");
     String cidade = request.getParameter("cidade");
+    boolean editoraAdicionada = false;
 
     if (nome != null && cidade != null) {
-        // Dados do banco de dados
         String url = "jdbc:mysql://localhost:3306/livraria";
-        String username = "root"; // substitua pelo seu usuário do banco de dados
-        String password = ""; // substitua pela sua senha do banco de dados
+        String username = "root"; 
+        String password = ""; 
 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Utilize o driver atualizado
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
 
             String sql = "INSERT INTO editora (nome, cidade) VALUES (?, ?)";
@@ -103,16 +111,11 @@
             pstmt.setString(2, cidade);
             pstmt.executeUpdate();
             
-            out.println ("<div class='container-msg'><h1>Nova Editora Adicionada com Sucesso!</h1></div>");
-    
+            editoraAdicionada = true;
         } catch (SQLException e) {
             e.printStackTrace();
-            out.println("<h1>Erro ao adicionar a editora: " + e.getMessage() + "</h1>");
-            out.println("<a href='admin.html'>Voltar ao Admin</a>");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            out.println("<h1>Erro ao carregar o driver JDBC: " + e.getMessage() + "</h1>");
-            out.println("<a href='admin.html'>Voltar ao Admin</a>");
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
@@ -138,6 +141,26 @@
         </form><br>
         <a href="admin.html">Sair</a>
     </div>
+
+    <% if (editoraAdicionada) { %>
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <h1>Nova Editora Adicionada com Sucesso!</h1>
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    <% } %>
+
+    <script>
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            window.location.href = 'addEditora.jsp';
+        }
+
+        <% if (editoraAdicionada) { %>
+            document.getElementById('modal').style.display = 'flex';
+        <% } %>
+    </script>
    
 </body>
 </html>

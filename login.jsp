@@ -1,6 +1,6 @@
 <%@ page language="java" %>
-<%@ page contentType="text/html" %>
-<%@ page pageEncoding="ISO-8859-1" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="javax.servlet.*" %>
@@ -111,9 +111,8 @@
     <div>
         <a href="index.jsp">Voltar para página inicial</a>
     </div>
-    <div>
+    <%-- <div>
         <a href="testar.jsp">Teste conexão banco de dados</a>
-    </div>
+    </div> --%>
 </body>
 </html>
-
