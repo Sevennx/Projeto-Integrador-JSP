@@ -1,7 +1,4 @@
-<%@ page import="java.sql.*" %>
-<%@ page import="java.io.*" %>
-<%@ page import="javax.servlet.*" %>
-<%@ page import="javax.servlet.http.*" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.sql.*, java.io.*, javax.servlet.*, javax.servlet.http.*" %>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -100,40 +97,46 @@
 <body>
 
 <%
+    String url = "jdbc:mysql://localhost:3306/livraria";
+    String username = "root";
+    String password = "";
+
     String titulo = request.getParameter("titulo");
     String autor = request.getParameter("autor");
     String ano = request.getParameter("ano");
     String preco = request.getParameter("preco");
     String foto = request.getParameter("foto");
-    String editora = request.getParameter("editora");
+    String idEditora = request.getParameter("editora");
     boolean livroAdicionado = false;
 
-    if (titulo != null && autor != null && ano != null && preco != null && editora != null) {
-        String url = "jdbc:mysql://localhost:3306/livraria";
-        String username = "root";
-        String password = "";
-
+    if (titulo != null && autor != null && ano != null && preco != null && idEditora != null) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            // Estabelecer a conexão com o banco de dados
             conn = DriverManager.getConnection(url, username, password);
 
-            String sql = "INSERT INTO livros (titulo, autor, ano_publicacao, preco, url_foto, editora_id) VALUES (?, ?, ?, ?, ?, ?)";
+            // Preparar a consulta SQL para inserir um novo livro
+            String sql = "INSERT INTO livro (titulo, autor, ano, preco, foto, idEditora) VALUES (?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, titulo);
             pstmt.setString(2, autor);
             pstmt.setInt(3, Integer.parseInt(ano));
             pstmt.setDouble(4, Double.parseDouble(preco));
             pstmt.setString(5, foto);
-            pstmt.setInt(6, Integer.parseInt(editora));
+            pstmt.setInt(6, Integer.parseInt(idEditora));
+            
+            // Executar a consulta
             pstmt.executeUpdate();
             
+            // Marcar o livro como adicionado com sucesso
             livroAdicionado = true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
+            // Tratar exceção de SQL
             e.printStackTrace();
         } finally {
+            // Fechar recursos, como PreparedStatement e Connection
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
@@ -167,28 +170,33 @@
         <select id="editora" name="editora" required>
             <!-- Adicione as opções dinamicamente -->
             <option value="">Selecione uma Editora</option>
-            <% 
-            try {
-                String url = "jdbc:mysql://localhost:3306/livraria";
-                String username = "root";
-                String password = "";
-                Connection conn = DriverManager.getConnection(url, username, password);
-                Statement stmt = conn.createStatement();
-                String sql = "SELECT id, nome FROM editora";
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    int editoraId = rs.getInt("id");
-                    String editoraNome = rs.getString("nome");
-            %>
-                    <option value="<%= editoraId %>"><%= editoraNome %></option>
-            <% 
+            <%
+                Connection conn = null;
+                Statement stmt = null;
+                ResultSet rs = null;
+                try {
+                    // Estabelecer a conexão com o banco de dados
+                    conn = DriverManager.getConnection(url, username, password);
+                    stmt = conn.createStatement();
+                    String sql = "SELECT id, nome FROM editora";
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        int editoraId = rs.getInt("id");
+                        String editoraNome = rs.getString("nome");
+                        out.println("<option value='" + editoraId + "'>" + editoraNome + "</option>");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    // Fechar recursos, como Statement e Connection
+                    try {
+                        if (rs != null) rs.close();
+                        if (stmt != null) stmt.close();
+                        if (conn != null) conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-                rs.close();
-                stmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
             %>
         </select>
         
@@ -209,7 +217,7 @@
 <script>
     function closeModal() {
         document.getElementById('modal').style.display = 'none';
-        window.location.href = 'addBook.jsp';
+        window.location.href = 'addLivro.jsp';
     }
 
     <% if (livroAdicionado) { %>
