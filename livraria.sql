@@ -12,7 +12,7 @@ CREATE TABLE livro (
     autor VARCHAR(60),
     ano INT,
     preco DOUBLE,
-    foto VARCHAR(45),
+    foto VARCHAR(1000),
     idEditora INT,
     FOREIGN KEY (idEditora) REFERENCES editora(id)
 );

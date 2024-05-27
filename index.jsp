@@ -133,7 +133,7 @@
                             <p>Preço: R$ <%= rs.getDouble("preco") %></p>
                             <%
                                 int idEditora = rs.getInt("idEditora");
-                                PreparedStatement pstmt = conn.prepareStatement("SELECT nome FROM editora WHERE id = ?");
+                                PreparedStatement pstmt = conn.prepareStatement("SELECT nome FROM editora WHERE id =?");
                                 pstmt.setInt(1, idEditora);
                                 ResultSet rsEditora = pstmt.executeQuery();
                                 if (rsEditora.next()) {
@@ -143,9 +143,8 @@
                                 }
                                 pstmt.close();
                             %>
-                        </div>
-                        <div class="book-cover">
-                            <img src="capa-livros-img/img.jpg" alt="Capa do Livro">
+                            <!-- Exibir a imagem do livro -->
+                            <img src="<%= rs.getString("foto") %>" alt="Imagem do Livro">
                         </div>
                     </li>
         <%  

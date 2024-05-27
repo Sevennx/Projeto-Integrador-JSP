@@ -87,7 +87,7 @@
     </style>
 </head>
 <body>
-
+        
 <%
     String nome = request.getParameter("nome");
     String cidade = request.getParameter("cidade");
@@ -125,6 +125,7 @@
             }
         }
     }
+    
 %>
 
     <div class="container">
@@ -161,6 +162,7 @@
             document.getElementById('modal').style.display = 'flex';
         <% } %>
     </script>
-   
+    
+
 </body>
 </html>

@@ -111,8 +111,5 @@
     <div>
         <a href="index.jsp">Voltar para página inicial</a>
     </div>
-    <%-- <div>
-        <a href="testar.jsp">Teste conexão banco de dados</a>
-    </div> --%>
 </body>
 </html>
